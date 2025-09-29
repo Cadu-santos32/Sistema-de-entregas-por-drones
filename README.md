@@ -63,10 +63,10 @@ npm install
 3. Inicie a aplicação React:
 
 ```bash
-npm start
+npm run dev
 ```
 
-> O aplicativo será aberto no navegador em [http://localhost:3000/](http://localhost:3000/)
+> O aplicativo será aberto no navegador em [http://localhost:5173/](http://localhost:5173/)
 
 ---
 
