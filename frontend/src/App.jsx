@@ -7,25 +7,24 @@ import DroneForm from "./compenents/DroneForm";
 import PedidoForm from "./compenents/PedidoForm";
 import AtribuicaoForm from "./compenents/AtribuicaoForm";
 import Mapa from "./compenents/Mapa";
-import ModalEdicao from "./compenents/ModalEdicao";
 
 export default function SistemaEntrega() {
   const [drones, setDrones] = useState([]);
   const [pedidos, setPedidos] = useState([]);
   const [atribuicoes, setAtribuicoes] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [droneSelecionado, setDroneSelecionado] = useState(null);
 
-  const abrirModalHistorico = () => { 
-    setIsHistoricoModalOpen(true); 
-  };
+  const abrirModalHistorico = (drone) => {
+    setDroneSelecionado(drone);
+    setIsModalOpen(true);
+  };
 
-  const fecharModalEdicao = () => {
-    setIsEdicaoModalOpen(false);
-    setSelectedItemId(null);
-    setEditFormData({});
-    setEditingType(null);
-    setSelecionando(null);
-  };
+  const fecharModalHistorico = () => {
+    setIsModalOpen(false);
+    setDroneSelecionado(null);
+  };
 
       useEffect(() => {
         axios.get("http://localhost:8080/drone/listartodos")
@@ -73,8 +72,8 @@ export default function SistemaEntrega() {
   const [editingType, setEditingType] = useState(null); 
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [editFormData, setEditFormData] = useState({}); 
-  const [isEdicaoModalOpen, setIsEdicaoModalOpen] = useState(false);
-  const [isHistoricoModalOpen, setIsHistoricoModalOpen] = useState(false)
+
+  
 
   const linhas = 5;
   const colunas = 5;
@@ -146,12 +145,12 @@ export default function SistemaEntrega() {
     }
   };
 
-  const abrirModalSelecao = (type) => {
-    setEditingType(type);
-    setSelectedItemId(null);
-    setEditFormData({});
-    setIsEdicaoModalOpen(true);
-  };
+  const abrirModalSelecao = (type) => {
+    setEditingType(type);
+    setSelectedItemId(null);
+    setEditFormData({});
+    setIsModalOpen(true);
+  };
   
   const selecionarItemParaEdicao = (e) => {
     const id = e.target.value;
@@ -341,7 +340,7 @@ const estadoInicial = atribuicoesPendentes.map((a) => {
             selecionando={selecionando}
             simulacao={simulacao}
             selecionarCelula={selecionarCelula}
-            isModalOpen={isEdicaoModalOpen}
+            isModalOpen={isModalOpen}
             editFormData={editFormData}
         />
 
@@ -366,26 +365,26 @@ const estadoInicial = atribuicoesPendentes.map((a) => {
             abrirModalSelecao={abrirModalSelecao}
           />
 
-<AtribuicaoForm 
-  atribuicao={atribuicao}
-  setAtribuicao={setAtribuicao}
-  atribuirEntrega={atribuirEntrega}
-  atribuicoes={atribuicoes}
-  setAtribuicoes={setAtribuicoes}
-  pedidos={pedidos}
-  drones={drones}
-  simulacao={simulacao}            
-  iniciarEntrega={iniciarEntrega}  
-  intervalId={intervalId}          
-  resetarSimulacao={resetarSimulacao}
-  parsePos={parsePos}
-/>
+      <AtribuicaoForm 
+        atribuicao={atribuicao}
+        setAtribuicao={setAtribuicao}
+        atribuirEntrega={atribuirEntrega}
+        atribuicoes={atribuicoes}
+        setAtribuicoes={setAtribuicoes}
+        pedidos={pedidos}
+        drones={drones}
+        simulacao={simulacao}            
+        iniciarEntrega={iniciarEntrega}  
+        intervalId={intervalId}          
+        resetarSimulacao={resetarSimulacao}
+        parsePos={parsePos}
+      />
         </div>
       </div>
       
       <ModalHistorico 
-        isOpen={isHistoricoModalOpen}
-        onClose={fecharModalEdicao}
+        isOpen={isModalOpen}
+        onClose={fecharModalHistorico}
         drones={drones}
       />
     </div>
