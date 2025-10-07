@@ -37,7 +37,15 @@ public class EntregaService {
         entrega.setPedido(pedido);
         entrega.setDataEntrega(LocalDateTime.now());
 
-        return entregaRepository.save(entrega);
+        PedidoModel pedidoModel = pedidoRepository.findById(pedidoId).orElse(null);
+
+        if (pedidoModel != null) {
+            pedidoModel.setEntregue(true);
+            pedidoRepository.save(pedidoModel);
+        }
+
+        entregaRepository.save(entrega);
+        return entrega;
     }
 
     public List<EntregaModel> listarEntregas() {
